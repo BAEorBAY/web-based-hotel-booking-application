@@ -1,0 +1,115 @@
+#formCard{
+    /* Menempatkan card ditnegah secara horizontal */
+    margin: 0 auto;
+
+    /* menempatkan card di tengah secara vertikal */
+    position: absolute;
+    top: 58%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* Tambahkan lebar dan padding untuk card */
+    width: 50%;
+    padding: 20px;
+
+    /* optional  */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.element{
+    background: linear-gradient(90deg, rgb(2, 10, 89), rgb(77, 181, 237) 100%);
+}
+h1{
+    padding-top: 2%;
+    padding-bottom: 2%;
+    text-align: center;
+    color: floralwhite;
+}
+
+.bn5{
+    padding: 1em 1em;
+    border: none;
+    outline: none;
+    color: rgb(255, 255, 255);
+    background: #111;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.bn5::before{
+    content: "";
+    background: linear-gradient(
+        45deg,
+        #f00,
+        #ff7300,
+        #fffb00,
+        #48ff00,
+        #00ffd5,
+        #002bff,
+        #7a00ff,
+        #ff00c8,
+        #f00
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowingbn5 20s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 10px;
+}
+
+@keyframes glowingbn5 {
+    0%{
+        background-position: 0 0;
+    }
+
+    50%{
+        background-position: 400% 0;
+    }
+
+    100%{
+        background-position: 0 0;
+    }
+
+}
+
+.bn5:active{
+    color: #000;
+}
+
+.bn5:active::after{
+    background: transparent;
+}
+
+.bn5:hover::before{
+    opacity: 1;
+}
+
+.bn5::after{
+    z-index: -1;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #191919;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+
+h1{
+    padding-top: 2%;
+    padding-bottom: 2%;
+    text-align: center;
+    color: floralwhite;
+}
+

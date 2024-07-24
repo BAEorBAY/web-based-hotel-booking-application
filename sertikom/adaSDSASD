@@ -1,0 +1,173 @@
+<div>
+    <h3>Form Pemesanan</h3>
+    <form method="POST" action="penyewaan_update.php?id=<?=$id_sewa?>">
+    <table>
+        <tr>
+            <td>Nama Lengkap</td>
+            <td><input type="text" name="nama" value="<?=$data['nama']?>"></td>
+        </tr>
+        <tr>
+            <td>No Identitas</td>
+            <td><input type="text" name="no_identitas" value="<?=$data['no_identitas']?>"></td>
+        </tr>
+        <tr>
+            <td>No Handphone</td>
+            <td><input type="text" name="no_hp" value="<?=$data['no_hp']?>"></td>
+        </tr>
+        <tr>
+            <td>Jenis Kamar</td>
+            <td>
+                <select name="id_kamar" id="jenis_kamar">
+                <?php
+                    $sql = "SELECT * FROM tbl_jenis_kamar";
+                    $query = mysqli_query($db, $sql);
+                    while($kamar = mysqli_fetch_array($query)){
+                        echo "<option value=".$kamar['id_kamar']." data-harga='".$kamar['harga']."'";
+                        if ($kamar['id_kamar']==$data['id_kamar']) {
+                            echo " selected>";
+                        }else{
+                            echo ">";
+                        } 
+                        echo $kamar['jenis_kamar']." - Rp ".$kamar['harga'];
+                        echo "</option>";
+                    }
+                    ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Check In</td>
+            <td><input type="date" name="cekin" value="<?=$data['cekin']?>"></td>
+        </tr>
+        <tr>
+            <td>Check Out</td>
+            <td><input type="date" name="cekout" value="<?=$data['cekout']?>"></td>
+        </tr>
+        <tr>
+            <td>Jumlah Kamar</td>
+            <td><input type="text" name="jumlah" id="jumlah_kamar" value="<?=$data['jumlah']?>"></td>
+        </tr>
+        <tr>
+            <td>Total Bayar</td>
+            <td><input type="text" name="total" id="total" value="<?=$data['total']?>"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="button" id="btn_hitung" onclick=hitung()>Hitung Total Bayar</button>
+                <input type="submit" value="Simpan Transaksi"></input>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+<div class="card col-md-8" id="formCard">
+    <h5 class="card-header bg-primary"></h5>
+    <div class="card-body">
+        <h5 class="card-title">Form Pemesanan</h5>
+        <form method="POST">
+            <div class="form-group">
+                <label for="nama">Nama Lengkap :</label>
+                <input type="text" name="nama" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="no_identitas">No Identitas :</label>
+                <input type="text" name="no_identitas" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="no_hp">Nomor HP :</label>
+                <input type="text" name="no_hp" class="form-control" required>
+            </div> 
+            <br>
+
+            <div class="form-group">
+                <label for="jenis_kamar">Jenis Kamar :</label>
+                <select class="form-select" aria-label="Default select example" name="id_kamar" id="jenis_kamar" onchange="hitung()">
+                    <option selected disabled>Jenis Kamar</option>
+                    <?php 
+                    $sql = "SELECT * FROM tbl_jenis_kamar";
+                    $query = mysqli_query($koneksi, $sql);
+                    while ($kamar = mysqli_fetch_array($query)) {
+                        echo "<option value='".$kamar['id_kamar']."' data-harga='".$kamar['harga']."'>
+                        ".$kamar['jenis_kamar']." - Rp ".$kamar['harga']."</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <br>
+
+            <div class="form-group">
+                <label for="checkin">Check In :</label>
+                <input type="date" name="checkin" id="checkin" class="form-control" required>
+            </div>
+            <br>
+
+            <div class="form-group">
+                <label for="checkout">Check Out :</label>
+                <input type="date" name="checkout" id="checkout" class="form-control" required>
+            </div>
+            <br>
+
+            <div class="form-group">
+                <label for="jumlah">Jumlah Kamar :</label>
+                <input type="number" name="jumlah" class="form-control" id="jumlah_kamar"  required>
+            </div>
+            <br>
+
+            <div class="form-group">
+                <label for="total">Total Bayar :</label>
+                <input type="text" name="total" class="form-control" id="total_bayar" readonly required>
+            </div>
+            <br>
+
+            <!-- <input type="submit" class="btn btn-primary" value="Simpan Transaksi"> -->
+            <!-- <button type="button" id="btn_hitung" onclick="hitung()">Hitung Total Bayar</button>
+            <div class="form-group">
+                <a href="kamar_read.php"><button class="btn btn-info col-sm-12"
+                style="color: white;" type="submit" name="submit" value="Simpan Transaksi">Simpan Transaksi
+            </button></a>
+            </div>
+        </form>
+    </div>
+</div>  -->
+
+<script>
+function hitung() {
+    var checkin = new Date(document.getElementById("checkin").value);
+    var checkout = new Date(document.getElementById("checkout").value);
+    var durasi = (checkout - checkin) / (1000 * 60 * 60 * 24);
+
+    if (isNaN(durasi) || durasi <= 0) {
+        alert("Tanggal check-out harus lebih besar dari tanggal check-in.");
+        return;
+    }
+
+    var jk = document.getElementById("jenis_kamar");
+    var harga = jk.options[jk.selectedIndex].dataset.harga;
+    var jumlah_kamar = document.getElementById("jumlah_kamar").value;
+
+    var total_bayar = harga * jumlah_kamar * durasi;
+    document.getElementById("total_bayar").value = total_bayar;
+}
+</script>
